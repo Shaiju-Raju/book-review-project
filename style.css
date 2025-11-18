@@ -52,6 +52,7 @@ body{
   font-weight: 500;
   color: #ffffff;
   width: 100px;
+  text-decoration: none;
 
   background: linear-gradient(145deg, #0d0d0d, #1b1b1b);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -65,6 +66,12 @@ body{
     inset 0 0 10px rgba(255, 255, 255, 0.03);
 }
 
+.new-content-tag{
+    text-decoration: none;
+    font-family: sans-serif;
+    color: white;
+}
+
 .new-content:hover {
   background: linear-gradient(145deg, #181818, #232323);
   border-color: rgba(255, 255, 255, 0.25);
@@ -72,4 +79,11 @@ body{
   box-shadow:
     0 0 14px rgba(255, 255, 255, 0.12),
     inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+.new-content:active {
+    transform: translateY(0);
+    box-shadow:
+    0 0 6px rgba(255, 255, 255, 0.08),
+    inset 0 0 8px rgba(255, 255, 255, 0.07);
 }
