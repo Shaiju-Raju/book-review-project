@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Review Collection</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-section">
+                <h1 class="logo">📚 Book Reviews</h1>
+                <p class="tagline">A Design DIY Collection</p>
+            </div>
+            <nav class="nav-menu">
+                <a href="#home" class="nav-link active">HOME</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <section class="hero">
+            <h2 class="hero-title">Book Review Collection</h2>
+            <p class="hero-subtitle">Discover amazing books and share your thoughts</p>
+        </section>
+
+        <section class="filters">
+            <div class="search-box">
+                <input type="text" placeholder="Search books..." class="search-input" />
+                <button class="search-btn">🔍</button>
+            </div>
+            <div class="sort-options">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select" class="sort-select">
+                    <option>All Posts</option>
+                    <option>Title</option>
+                    <option>Rating</option>
+                    <option>Latest</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Add Book Form removed -->
+
+        <!-- Book Cards Grid -->
+        <section class="books-grid">
+            <article class="book-card" data-id="card-1">
+                <div class="card-image-container">
+                    <img src="https://via.placeholder.com/300x400/FF6B6B/ffffff?text=Book+1" alt="Book Cover" class="book-image" />
+                </div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="author-info">
+                            <div>
+                                <p class="card-author">John Doe</p>
+                                <p class="card-rating">⭐ 8/10</p>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="edit-btn" title="Edit">✏️</button>
+                            <button class="delete-btn" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <h3 class="book-title">The Art of Creative Thinking</h3>
+                    <p class="book-review">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
+                    </p>
+                </div>
+            </article>
+
+            <article class="book-card" data-id="card-2">
+                <div class="card-image-container">
+                    <img src="https://via.placeholder.com/300x400/4ECDC4/ffffff?text=Book+2" alt="Book Cover" class="book-image" />
+                </div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="author-info">
+                            <div>
+                                <p class="card-author">Jane Smith</p>
+                                <p class="card-rating">⭐ 9/10</p>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="edit-btn" title="Edit">✏️</button>
+                            <button class="delete-btn" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <h3 class="book-title">Digital Marketing Mastery</h3>
+                    <p class="book-review">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
+                    </p>
+                </div>
+            </article>
+
+            <article class="book-card" data-id="card-3">
+                <div class="card-image-container">
+                    <img src="https://via.placeholder.com/300x400/95E1D3/ffffff?text=Book+3" alt="Book Cover" class="book-image" />
+                </div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="author-info">
+                            <div>
+                                <p class="card-author">Alex Brown</p>
+                                <p class="card-rating">⭐ 7/10</p>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="edit-btn" title="Edit">✏️</button>
+                            <button class="delete-btn" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <h3 class="book-title">Journey to Self Discovery</h3>
+                    <p class="book-review">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
+                    </p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Book Review Collection. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Apply edits returned from edit.html (if any)
+        (function applyEditResult(){
+            try {
+                const raw = localStorage.getItem('editResult');
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                if (!data || !data.id) {
+                    localStorage.removeItem('editResult');
+                    return;
+                }
+
+                const card = document.querySelector(`[data-id="${data.id}"]`);
+                if (card) {
+                    const titleEl = card.querySelector('.book-title');
+                    const authorEl = card.querySelector('.card-author');
+                    const ratingEl = card.querySelector('.card-rating');
+                    const reviewEl = card.querySelector('.book-review');
+                    const imageEl = card.querySelector('.book-image');
+
+                    if (titleEl && data.title) titleEl.textContent = data.title;
+                    if (authorEl && data.author) authorEl.textContent = data.author;
+                    if (ratingEl && data.rating) ratingEl.textContent = `⭐ ${data.rating}/10`;
+                    if (reviewEl && data.review) reviewEl.textContent = data.review;
+                    if (imageEl && data.image) imageEl.src = data.image;
+                }
+                // clear edit result after applying
+                localStorage.removeItem('editResult');
+            } catch (err) {
+                console.error('applyEditResult error', err);
+                localStorage.removeItem('editResult');
+            }
+        })();
+
+        // Event delegation on the books grid to handle edit and delete actions
+        const booksGrid = document.querySelector('.books-grid');
+
+        booksGrid && booksGrid.addEventListener('click', function(e) {
+            const deleteBtn = e.target.closest('.delete-btn');
+            const editBtn = e.target.closest('.edit-btn');
+
+            if (deleteBtn) {
+                const card = deleteBtn.closest('.book-card');
+                if (!card) return;
+                if (confirm('Are you sure you want to delete this review?')) {
+                    card.remove();
+                }
+                return;
+            }
+
+            if (editBtn) {
+                const card = editBtn.closest('.book-card');
+                if (!card) return;
+
+                const id = card.getAttribute('data-id') || '';
+                const titleEl = card.querySelector('.book-title');
+                const authorEl = card.querySelector('.card-author');
+                const ratingEl = card.querySelector('.card-rating');
+                const reviewEl = card.querySelector('.book-review');
+                const imageEl = card.querySelector('.book-image');
+
+                const payload = {
+                    id: id,
+                    title: titleEl ? titleEl.textContent.trim() : '',
+                    author: authorEl ? authorEl.textContent.trim() : '',
+                    rating: ratingEl ? (ratingEl.textContent.replace(/[^0-9]/g, '') || '') : '',
+                    review: reviewEl ? reviewEl.textContent.trim() : '',
+                    image: imageEl ? imageEl.src : ''
+                };
+
+                // save to localStorage and navigate to edit page
+                try {
+                    localStorage.setItem('editCard', JSON.stringify(payload));
+                    window.location.href = 'edit.html';
+                } catch (err) {
+                    console.error('Unable to open edit page', err);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
