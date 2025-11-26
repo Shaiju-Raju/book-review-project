@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Book Review Form</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Minimal focused styles for form page */
+        .form-container {
+            max-width: 760px;
+            margin: 60px auto;
+            background: linear-gradient(135deg, #333 0%, #2a2a2a 100%);
+            border: 1px solid #444;
+            padding: 28px;
+            border-radius: 10px;
+            color: #e0e0e0;
+        }
+        .form-container h2 { margin-bottom: 16px; }
+        .form-row { display: flex; gap: 12px; }
+        .form-group { display:flex; flex-direction:column; margin-bottom:12px; flex:1 }
+        .form-input, .form-textarea { padding:10px; border-radius:6px; border:1px solid #555; background:#3a3a3a; color:#e0e0e0 }
+        .form-textarea { min-height:120px }
+        .form-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:12px }
+        .btn { padding:10px 16px; border-radius:6px; border:none; cursor:pointer }
+        .btn-primary { background: linear-gradient(135deg,#4a9eff,#357abd); color:#fff }
+        .btn-secondary { background:#444; color:#e0e0e0 }
+    </style>
+</head>
+<body>
+    <main class="form-container">
+        <h2 id="formTitle">New Book Review</h2>
+        <form id="bookForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input id="title" name="title" class="form-input" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input id="author" name="author" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating (1-10)</label>
+                    <input id="rating" name="rating" type="number" min="1" max="10" class="form-input" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image URL</label>
+                <input id="image" name="image" class="form-input" />
+            </div>
+
+            <div class="form-group">
+                <label for="review">Review</label>
+                <textarea id="review" name="review" class="form-textarea" required></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Review</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Detect mode: edit or new
+        const formMode = localStorage.getItem('formMode') || 'new';
+        const formDataRaw = localStorage.getItem('formData');
+        let editingCardId = null;
+
+        const titleEl = document.getElementById('title');
+        const authorEl = document.getElementById('author');
+        const ratingEl = document.getElementById('rating');
+        const reviewEl = document.getElementById('review');
+        const imageEl = document.getElementById('image');
+        const formTitle = document.getElementById('formTitle');
+
+        // Handle edit mode
+        if (formMode === 'edit' && formDataRaw) {
+            try {
+                const payload = JSON.parse(formDataRaw);
+                editingCardId = payload.id;
+                formTitle.textContent = 'Edit Book Review';
+                titleEl.value = payload.title || '';
+                authorEl.value = payload.author || '';
+                ratingEl.value = payload.rating || '';
+                reviewEl.value = payload.review || '';
+                imageEl.value = payload.image || '';
+            } catch (err) {
+                console.error('Invalid form data', err);
+                localStorage.removeItem('formData');
+                localStorage.removeItem('formMode');
+            }
+        }
+
+        // Cancel button
+        document.getElementById('cancelBtn').addEventListener('click', function(){
+            localStorage.removeItem('formData');
+            localStorage.removeItem('formMode');
+            location.href = 'index.html';
+        });
+
+        // Submit handler: write result and go back to index
+        document.getElementById('bookForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const result = {
+                id: editingCardId,  // null for new, or card id for edit
+                title: titleEl.value.trim(),
+                author: authorEl.value.trim(),
+                rating: ratingEl.value.trim(),
+                review: reviewEl.value.trim(),
+                image: imageEl.value.trim()
+            };
+
+            try {
+                localStorage.setItem('formResult', JSON.stringify(result));
+                // cleanup form data
+                localStorage.removeItem('formData');
+                localStorage.removeItem('formMode');
+            } catch (err) {
+                console.error('Unable to save form result', err);
+            }
+
+            // navigate back to home
+            location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

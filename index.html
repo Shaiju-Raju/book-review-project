@@ -16,7 +16,7 @@
             </div>
             <nav class="nav-menu">
                 <a href="#home" class="nav-link active">HOME</a>
-                <a href="#about" class="nav-link">ABOUT</a>
+                <a href="form.html" class="nav-link">NEW REVIEW</a>
             </nav>
         </div>
     </header>
@@ -128,36 +128,70 @@
     </footer>
 
     <script>
-        // Apply edits returned from edit.html (if any)
-        (function applyEditResult(){
+        // Apply result from form.html (edit or new)
+        (function applyFormResult(){
             try {
-                const raw = localStorage.getItem('editResult');
+                const raw = localStorage.getItem('formResult');
                 if (!raw) return;
                 const data = JSON.parse(raw);
-                if (!data || !data.id) {
-                    localStorage.removeItem('editResult');
+                if (!data) {
+                    localStorage.removeItem('formResult');
                     return;
                 }
 
-                const card = document.querySelector(`[data-id="${data.id}"]`);
-                if (card) {
-                    const titleEl = card.querySelector('.book-title');
-                    const authorEl = card.querySelector('.card-author');
-                    const ratingEl = card.querySelector('.card-rating');
-                    const reviewEl = card.querySelector('.book-review');
-                    const imageEl = card.querySelector('.book-image');
+                // If editing existing card
+                if (data.id) {
+                    const card = document.querySelector(`[data-id="${data.id}"]`);
+                    if (card) {
+                        const titleEl = card.querySelector('.book-title');
+                        const authorEl = card.querySelector('.card-author');
+                        const ratingEl = card.querySelector('.card-rating');
+                        const reviewEl = card.querySelector('.book-review');
+                        const imageEl = card.querySelector('.book-image');
 
-                    if (titleEl && data.title) titleEl.textContent = data.title;
-                    if (authorEl && data.author) authorEl.textContent = data.author;
-                    if (ratingEl && data.rating) ratingEl.textContent = `⭐ ${data.rating}/10`;
-                    if (reviewEl && data.review) reviewEl.textContent = data.review;
-                    if (imageEl && data.image) imageEl.src = data.image;
+                        if (titleEl && data.title) titleEl.textContent = data.title;
+                        if (authorEl && data.author) authorEl.textContent = data.author;
+                        if (ratingEl && data.rating) ratingEl.textContent = `⭐ ${data.rating}/10`;
+                        if (reviewEl && data.review) reviewEl.textContent = data.review;
+                        if (imageEl && data.image) imageEl.src = data.image;
+                    }
+                } else {
+                    // If creating new card
+                    const booksGrid = document.querySelector('.books-grid');
+                    if (booksGrid) {
+                        const newId = 'card-' + Date.now();
+                        const newCard = document.createElement('article');
+                        newCard.className = 'book-card';
+                        newCard.setAttribute('data-id', newId);
+                        newCard.innerHTML = `
+                            <div class="card-image-container">
+                                <img src="${data.image || 'https://via.placeholder.com/300x400/95E1D3/ffffff?text=New+Book'}" alt="Book Cover" class="book-image" />
+                            </div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <div class="author-info">
+                                        <div>
+                                            <p class="card-author">${data.author || 'Unknown'}</p>
+                                            <p class="card-rating">⭐ ${data.rating || '0'}/10</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="edit-btn" title="Edit">✏️</button>
+                                        <button class="delete-btn" title="Delete">🗑️</button>
+                                    </div>
+                                </div>
+                                <h3 class="book-title">${data.title || 'New Review'}</h3>
+                                <p class="book-review">${data.review || ''}</p>
+                            </div>
+                        `;
+                        booksGrid.insertBefore(newCard, booksGrid.firstChild);
+                    }
                 }
-                // clear edit result after applying
-                localStorage.removeItem('editResult');
+                // clear result after applying
+                localStorage.removeItem('formResult');
             } catch (err) {
-                console.error('applyEditResult error', err);
-                localStorage.removeItem('editResult');
+                console.error('applyFormResult error', err);
+                localStorage.removeItem('formResult');
             }
         })();
 
@@ -197,10 +231,11 @@
                     image: imageEl ? imageEl.src : ''
                 };
 
-                // save to localStorage and navigate to edit page
+                // save to localStorage and navigate to form page (edit mode)
                 try {
-                    localStorage.setItem('editCard', JSON.stringify(payload));
-                    window.location.href = 'edit.html';
+                    localStorage.setItem('formData', JSON.stringify(payload));
+                    localStorage.setItem('formMode', 'edit');
+                    window.location.href = 'form.html';
                 } catch (err) {
                     console.error('Unable to open edit page', err);
                 }
