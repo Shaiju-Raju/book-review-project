@@ -17,7 +17,7 @@
             </div>
             <nav class="nav-menu">
                 <a href="#home" class="nav-link active">HOME</a>
-                <a href="form.ejs" class="nav-link">NEW REVIEW</a>
+                <a href="/new-review" class="nav-link">NEW REVIEW</a>
             </nav>
         </div>
     </header>
@@ -47,6 +47,9 @@
 
         <!-- Book Cards Grid -->
         <section class="books-grid">
+            <% book_review.forEach(item => { %>
+                
+            
             <article class="book-card" data-id="card-1">
                 <div class="card-image-container">
                     <img src="https://via.placeholder.com/300x400/FF6B6B/ffffff?text=Book+1" alt="Book Cover" class="book-image" />
@@ -55,8 +58,8 @@
                     <div class="card-header">
                         <div class="author-info">
                             <div>
-                                <p class="card-author">John Doe</p>
-                                <p class="card-rating">⭐ 8/10</p>
+                                <p class="card-author"><%= item.author %></p>
+                                <p class="card-rating">⭐ <%= item.rating %>/10</p>
                             </div>
                         </div>
                         <div class="card-actions">
@@ -64,60 +67,15 @@
                             <button class="delete-btn" title="Delete">🗑️</button>
                         </div>
                     </div>
-                    <h3 class="book-title">The Art of Creative Thinking</h3>
+                    <h3 class="book-title"><%= item.title %></h3>
                     <p class="book-review">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
+                        <%= item.review %>
                     </p>
                 </div>
             </article>
 
-            <article class="book-card" data-id="card-2">
-                <div class="card-image-container">
-                    <img src="https://via.placeholder.com/300x400/4ECDC4/ffffff?text=Book+2" alt="Book Cover" class="book-image" />
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="author-info">
-                            <div>
-                                <p class="card-author">Jane Smith</p>
-                                <p class="card-rating">⭐ 9/10</p>
-                            </div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="edit-btn" title="Edit">✏️</button>
-                            <button class="delete-btn" title="Delete">🗑️</button>
-                        </div>
-                    </div>
-                    <h3 class="book-title">Digital Marketing Mastery</h3>
-                    <p class="book-review">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
-                    </p>
-                </div>
-            </article>
-
-            <article class="book-card" data-id="card-3">
-                <div class="card-image-container">
-                    <img src="https://via.placeholder.com/300x400/95E1D3/ffffff?text=Book+3" alt="Book Cover" class="book-image" />
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="author-info">
-                            <div>
-                                <p class="card-author">Alex Brown</p>
-                                <p class="card-rating">⭐ 7/10</p>
-                            </div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="edit-btn" title="Edit">✏️</button>
-                            <button class="delete-btn" title="Delete">🗑️</button>
-                        </div>
-                    </div>
-                    <h3 class="book-title">Journey to Self Discovery</h3>
-                    <p class="book-review">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Create a blog post subtitle that summarizes your post in a few short, punchy sentences and entices your audience to continue reading...
-                    </p>
-                </div>
-            </article>
+            
+            <% }); %>
         </section>
     </main>
 
