@@ -31,7 +31,7 @@
 <body>
     <main class="form-container">
         <h2 id="formTitle">New Book Review</h2>
-        <form id="bookForm">
+        <form id="bookForm" action="/submit" method="POST">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input id="title" name="title" class="form-input" required />
@@ -101,12 +101,12 @@
         document.getElementById('cancelBtn').addEventListener('click', function(){
             localStorage.removeItem('formData');
             localStorage.removeItem('formMode');
-            location.href = 'index.ejs';
+            location.href = '/';
+
         });
 
         // Submit handler: write result and go back to index
-        document.getElementById('bookForm').addEventListener('submit', function(e){
-            e.preventDefault();
+
             const result = {
                 id: editingCardId,  // null for new, or card id for edit
                 title: titleEl.value.trim(),

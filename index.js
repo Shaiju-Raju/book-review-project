@@ -41,9 +41,23 @@ app.get("/", async (req, res) => {
 });
 
 
-app.get("/new-review", (req, res) => {
+app.get("/new-review",  (req, res) => {
     res.render("form.ejs");
 });
+
+app.post("/submit", async (req, res) => {
+    const title = req.body.title;
+    const author = req.body.author;
+    const rating = req.body.rating;
+    const review = req.body.review;
+
+    console.log(title, author, rating, review)
+
+     await db.query(
+        "INSERT INTO book_review (title, author, rating, review) VALUES ($1, $2, $3, $4)",
+    [title, author, rating, review]);
+    res.redirect("/")
+} )
 
 
 
