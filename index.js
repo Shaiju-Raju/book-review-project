@@ -45,6 +45,13 @@ app.get("/new-review",  (req, res) => {
     res.render("form.ejs");
 });
 
+app.get("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    const result = await db.query("SELECT * FROM book_review WHERE id=$1",[id]);
+    const dataToEdit = result.rows[0];
+    console.log(dataToEdit);
+})
+
 app.post("/submit", async (req, res) => {
     const title = req.body.title;
     const author = req.body.author;

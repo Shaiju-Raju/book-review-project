@@ -63,7 +63,10 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <button class="edit-btn" title="Edit">✏️</button>
+                            <form action="/edit/<%= item.id %>" method="get">
+                            <button type="submit" class="edit-btn" title="Edit">✏️</button>
+                            </form>
+
                             <form action="/delete/<%= item.id %>" method="post">
                             <button type="submit" class="delete-btn" title="Delete">🗑️</button>
                             </form>
