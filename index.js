@@ -51,7 +51,6 @@ app.post("/submit", async (req, res) => {
     const rating = req.body.rating;
     const review = req.body.review;
 
-    console.log(title, author, rating, review)
 
      await db.query(
         "INSERT INTO book_review (title, author, rating, review) VALUES ($1, $2, $3, $4)",
@@ -59,7 +58,18 @@ app.post("/submit", async (req, res) => {
     res.redirect("/")
 } )
 
+app.post("/delete/:id", async (req,res) => {
+    const id = req.params.id;
 
+    try {
+        await db.query("DELETE FROM book_review WHERE id=$1", [id]);
+        res.redirect("/");
+    } catch (err) {
+        console.error("Unable to catch item from database", err.message);
+    }
+    
+    
+})
 
 
 
