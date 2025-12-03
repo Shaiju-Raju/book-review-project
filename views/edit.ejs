@@ -31,7 +31,8 @@
 <body>
     <main class="form-container">
         <h2 id="formTitle">New Book Review</h2>
-        <form id="bookForm" action="/submit" method="POST">
+        <form id="<%= id %>" action="/edit-submit" method="POST">
+            <input type="hidden" name="id" value="<%= id %>">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input id="title" name="title" value="<%= title %>" class="form-input" required />

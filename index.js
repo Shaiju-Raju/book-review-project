@@ -50,7 +50,7 @@ app.get("/edit/:id", async (req, res) => {
     const result = await db.query("SELECT * FROM book_review WHERE id=$1",[id]);
     const dataToEdit = result.rows[0];
 
-    res.render("edit.ejs",{title: dataToEdit.title, author: dataToEdit.author,
+    res.render("edit.ejs",{id:dataToEdit.id, title: dataToEdit.title, author: dataToEdit.author,
         rating: dataToEdit.rating, review: dataToEdit.review
     });
 
@@ -63,8 +63,7 @@ app.post("/submit", async (req, res) => {
     const rating = req.body.rating;
     const review = req.body.review;
 
-
-     await db.query(
+    await db.query(
         "INSERT INTO book_review (title, author, rating, review) VALUES ($1, $2, $3, $4)",
     [title, author, rating, review]);
     res.redirect("/")
@@ -78,9 +77,24 @@ app.post("/delete/:id", async (req,res) => {
         res.redirect("/");
     } catch (err) {
         console.error("Unable to catch item from database", err.message);
-    }
-    
-    
+    }  
+})
+
+app.post("/edit-submit", async (req, res) => {
+    const data = {
+        id: req.body.id,
+        title: req.body.title,
+        author: req.body.author,
+        rating: req.body.rating,
+        review: req.body.review
+    };
+
+    await db.query(
+        "UPDATE book_review SET title=$1, author=$2, rating=$3, review=$4 WHERE id=$5",
+        [data.title,data.author,data.rating,data.review,data.id]
+     );
+
+     res.redirect("/");
 })
 
 
