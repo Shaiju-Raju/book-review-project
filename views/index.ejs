@@ -158,11 +158,11 @@
         })();
 
         // Event delegation on the books grid to handle edit and delete actions
-        const booksGrid = document.querySelector('.books-grid');
+        // const booksGrid = document.querySelector('.books-grid');
 
-        booksGrid && booksGrid.addEventListener('click', function(e) {
-            // const deleteBtn = e.target.closest('.delete-btn');
-            const editBtn = e.target.closest('.edit-btn');
+        // booksGrid && booksGrid.addEventListener('click', function(e) {
+        //     // const deleteBtn = e.target.closest('.delete-btn');
+        //     const editBtn = e.target.closest('.edit-btn');
 
             // if (deleteBtn) {
             //     const card = deleteBtn.closest('.book-card');
@@ -173,36 +173,36 @@
             //     return;
             // }
 
-            if (editBtn) {
-                const card = editBtn.closest('.book-card');
-                if (!card) return;
+            // if (editBtn) {
+            //     const card = editBtn.closest('.book-card');
+            //     if (!card) return;
 
-                const id = card.getAttribute('data-id') || '';
-                const titleEl = card.querySelector('.book-title');
-                const authorEl = card.querySelector('.card-author');
-                const ratingEl = card.querySelector('.card-rating');
-                const reviewEl = card.querySelector('.book-review');
-                const imageEl = card.querySelector('.book-image');
+            //     const id = card.getAttribute('data-id') || '';
+            //     const titleEl = card.querySelector('.book-title');
+            //     const authorEl = card.querySelector('.card-author');
+            //     const ratingEl = card.querySelector('.card-rating');
+            //     const reviewEl = card.querySelector('.book-review');
+            //     const imageEl = card.querySelector('.book-image');
 
-                const payload = {
-                    id: id,
-                    title: titleEl ? titleEl.textContent.trim() : '',
-                    author: authorEl ? authorEl.textContent.trim() : '',
-                    rating: ratingEl ? (ratingEl.textContent.replace(/[^0-9]/g, '') || '') : '',
-                    review: reviewEl ? reviewEl.textContent.trim() : '',
-                    image: imageEl ? imageEl.src : ''
-                };
+            //     const payload = {
+            //         id: id,
+            //         title: titleEl ? titleEl.textContent.trim() : '',
+            //         author: authorEl ? authorEl.textContent.trim() : '',
+            //         rating: ratingEl ? (ratingEl.textContent.replace(/[^0-9]/g, '') || '') : '',
+            //         review: reviewEl ? reviewEl.textContent.trim() : '',
+            //         image: imageEl ? imageEl.src : ''
+            //     };
 
                 // save to localStorage and navigate to form page (edit mode)
-                try {
-                    localStorage.setItem('formData', JSON.stringify(payload));
-                    localStorage.setItem('formMode', 'edit');
-                    window.location.href = 'form.ejs';
-                } catch (err) {
-                    console.error('Unable to open edit page', err);
-                }
-            }
-        });
+        //         try {
+        //             localStorage.setItem('formData', JSON.stringify(payload));
+        //             localStorage.setItem('formMode', 'edit');
+        //             window.location.href = 'form.ejs';
+        //         } catch (err) {
+        //             console.error('Unable to open edit page', err);
+        //         }
+        //     }
+        // });
     </script>
 </body>
 </html>
