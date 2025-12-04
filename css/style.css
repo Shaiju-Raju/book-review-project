@@ -200,8 +200,8 @@ body {
    ============================================ */
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
     margin-bottom: 50px;
 }
 
@@ -229,7 +229,9 @@ body {
 .card-image-container {
     position: relative;
     overflow: hidden;
-    height: 250px;
+    /* maintain a consistent aspect ratio for covers */
+    aspect-ratio: 3 / 4;
+    min-height: 220px; /* fallback */
     background: linear-gradient(135deg, #444 0%, #333 100%);
 }
 
@@ -242,6 +244,11 @@ body {
 
 .book-card:hover .book-image {
     transform: scale(1.05);
+}
+
+/* ensure cards have a consistent minimum height so content doesn't overflow */
+.book-card {
+    min-height: 520px;
 }
 
 /* Card Content */

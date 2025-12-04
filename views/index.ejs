@@ -50,9 +50,9 @@
             <% book_review.forEach(item => { %>
                 
             
-            <article class="book-card" data-id="card-1">
+            <article class="book-card" data-id="card-<%= item.id %>">
                 <div class="card-image-container">
-                    <img src="https://via.placeholder.com/300x400/FF6B6B/ffffff?text=Book+1" alt="Book Cover" class="book-image" />
+                    <img src="<%= item.image_url %>" alt="Book Cover" class="book-image" />
                 </div>
                 <div class="card-content">
                     <div class="card-header">

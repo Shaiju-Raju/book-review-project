@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import env from "dotenv";
+import axios from "axios";
 
 const app = express();
 const port = 3000;
@@ -32,11 +33,44 @@ async function book_review() {
     }
 };
 
+// Function for Api Call
+
+async function getCoverByTitleAuthor(title, author) {
+  try {
+    const url = `https://openlibrary.org/search.json?title=${encodeURIComponent(
+      title
+    )}&author=${encodeURIComponent(author)}`;
+
+    const response = await axios.get(url);
+
+    const docs = response.data.docs;
+
+    if (docs.length === 0) return null;
+
+    const book = docs[0]; // take first match
+
+    if (book.cover_i) {
+      return `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`;
+    }
+
+    // fallback: try ISBN
+    if (book.isbn && book.isbn.length > 0) {
+      return `https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-M.jpg`;
+    }
+
+    return null;
+  } catch (error) {
+    console.log("Error fetching:", error);
+    return null;
+  }
+}
+
+
 
 //initial route
 app.get("/", async (req, res) => {
     const books = await book_review();
-    // console.log(books)
+    
     res.render("index.ejs",{book_review: books});
 });
 
@@ -62,10 +96,18 @@ app.post("/submit", async (req, res) => {
     const author = req.body.author;
     const rating = req.body.rating;
     const review = req.body.review;
+    // fetch cover image (await the async function)
+    let imageURL = null;
+    try {
+        imageURL = await getCoverByTitleAuthor(title, author);
+    } catch (err) {
+        console.error('Error fetching cover image:', err);
+        imageURL = null;
+    }
 
     await db.query(
-        "INSERT INTO book_review (title, author, rating, review) VALUES ($1, $2, $3, $4)",
-    [title, author, rating, review]);
+        "INSERT INTO book_review (title, author, rating, review, image_url) VALUES ($1, $2, $3, $4,$5)",
+    [title, author, rating, review,imageURL]);
     res.redirect("/")
 } )
 

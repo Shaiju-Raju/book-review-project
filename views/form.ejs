@@ -49,10 +49,10 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="image">Image URL</label>
                 <input id="image" name="image" class="form-input" />
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label for="review">Review</label>
@@ -67,66 +67,8 @@
     </main>
 
     <script>
-        // Detect mode: edit or new
-        const formMode = localStorage.getItem('formMode') || 'new';
-        const formDataRaw = localStorage.getItem('formData');
-        let editingCardId = null;
-
-        const titleEl = document.getElementById('title');
-        const authorEl = document.getElementById('author');
-        const ratingEl = document.getElementById('rating');
-        const reviewEl = document.getElementById('review');
-        const imageEl = document.getElementById('image');
-        const formTitle = document.getElementById('formTitle');
-
-        // Handle edit mode
-        if (formMode === 'edit' && formDataRaw) {
-            try {
-                const payload = JSON.parse(formDataRaw);
-                editingCardId = payload.id;
-                formTitle.textContent = 'Edit Book Review';
-                titleEl.value = payload.title || '';
-                authorEl.value = payload.author || '';
-                ratingEl.value = payload.rating || '';
-                reviewEl.value = payload.review || '';
-                imageEl.value = payload.image || '';
-            } catch (err) {
-                console.error('Invalid form data', err);
-                localStorage.removeItem('formData');
-                localStorage.removeItem('formMode');
-            }
-        }
-
-        // Cancel button
+        // Only handle Cancel client-side; let the form submit to server (/submit)
         document.getElementById('cancelBtn').addEventListener('click', function(){
-            localStorage.removeItem('formData');
-            localStorage.removeItem('formMode');
-            // navigate back to home (server route)
-            window.location.href = '/';
-        });
-
-        // Submit handler: write result and go back to index
-        document.getElementById('bookForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            const result = {
-                id: editingCardId,  // null for new, or card id for edit
-                title: titleEl.value.trim(),
-                author: authorEl.value.trim(),
-                rating: ratingEl.value.trim(),
-                review: reviewEl.value.trim(),
-                image: imageEl.value.trim()
-            };
-
-            try {
-                localStorage.setItem('formResult', JSON.stringify(result));
-                // cleanup form data
-                localStorage.removeItem('formData');
-                localStorage.removeItem('formMode');
-            } catch (err) {
-                console.error('Unable to save form result', err);
-            }
-
-            // navigate back to home (server route)
             window.location.href = '/';
         });
     </script>
