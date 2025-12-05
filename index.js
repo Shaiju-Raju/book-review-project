@@ -140,8 +140,25 @@ app.post("/edit-submit", async (req, res) => {
 });
 
 app.post("/selection", async (req, res) => {
-    const searchParms = req.body.sortValue;
-    console.log(searchParms)
+
+    const allowed = {
+        all:null,
+        title: "title",
+        rating: "rating",
+        id:"id"
+    }
+    const searchParms =allowed[req.body.sortValue] ;
+  
+    try {
+        if(searchParms === null) {
+            const result = await db.query("SELECT * FROM book_review");
+        } else {
+            const result= await db.query (`SELECT * FROM book_review ORDER BY ${searchParms} DESC`)
+            res.render("index.ejs",{book_review: result.rows});
+        }
+    } catch (err) {
+        console.error("Error fetching data yousing parameters", err.message);
+    }
 });
 
 
