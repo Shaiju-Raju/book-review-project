@@ -137,7 +137,12 @@ app.post("/edit-submit", async (req, res) => {
      );
 
      res.redirect("/");
-})
+});
+
+app.post("/selection", async (req, res) => {
+    const searchParms = req.body.sortValue;
+    console.log(searchParms)
+});
 
 
 

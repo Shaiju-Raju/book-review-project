@@ -168,13 +168,19 @@ body {
 .sort-options {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 .sort-options label {
     font-weight: 600;
     color: #d0d0d0;
     font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+#sort-form {
+    display: flex;
+    align-items: center;
 }
 
 .sort-select {
@@ -186,13 +192,15 @@ body {
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    min-width: 150px;
 }
 
 .sort-select:hover,
 .sort-select:focus {
     background-color: #424242;
-    border-color: #666;
+    border-color: #888;
     outline: none;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================

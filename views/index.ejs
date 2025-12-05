@@ -36,12 +36,14 @@
             </div>
             <div class="sort-options">
                 <label for="sort-select">Sort by:</label>
-                <select id="sort-select" class="sort-select">
-                    <option>All Posts</option>
-                    <option>Title</option>
-                    <option>Rating</option>
-                    <option>Latest</option>
+                <form id="sort-form" action="/selection" method="POST">
+                 <select name="sortValue" id="sort-select" onchange="document.getElementById('sort-form').submit()">
+                    <option value="all">All Posts</option>
+                    <option value="title">Title</option>
+                    <option value="rating">Rating</option>
+                    <option value="id">Latest</option>
                 </select>
+                </form>
             </div>
         </section>
 
@@ -91,71 +93,71 @@
 
     <script>
         // Apply result from form.ejs (edit or new)
-        (function applyFormResult(){
-            try {
-                const raw = localStorage.getItem('formResult');
-                if (!raw) return;
-                const data = JSON.parse(raw);
-                if (!data) {
-                    localStorage.removeItem('formResult');
-                    return;
-                }
+        // (function applyFormResult(){
+        //     try {
+        //         const raw = localStorage.getItem('formResult');
+        //         if (!raw) return;
+        //         const data = JSON.parse(raw);
+        //         if (!data) {
+        //             localStorage.removeItem('formResult');
+        //             return;
+        //         }
 
                 // If editing existing card
-                if (data.id) {
-                    const card = document.querySelector(`[data-id="${data.id}"]`);
-                    if (card) {
-                        const titleEl = card.querySelector('.book-title');
-                        const authorEl = card.querySelector('.card-author');
-                        const ratingEl = card.querySelector('.card-rating');
-                        const reviewEl = card.querySelector('.book-review');
-                        const imageEl = card.querySelector('.book-image');
+        //         if (data.id) {
+        //             const card = document.querySelector(`[data-id="${data.id}"]`);
+        //             if (card) {
+        //                 const titleEl = card.querySelector('.book-title');
+        //                 const authorEl = card.querySelector('.card-author');
+        //                 const ratingEl = card.querySelector('.card-rating');
+        //                 const reviewEl = card.querySelector('.book-review');
+        //                 const imageEl = card.querySelector('.book-image');
 
-                        if (titleEl && data.title) titleEl.textContent = data.title;
-                        if (authorEl && data.author) authorEl.textContent = data.author;
-                        if (ratingEl && data.rating) ratingEl.textContent = `⭐ ${data.rating}/10`;
-                        if (reviewEl && data.review) reviewEl.textContent = data.review;
-                        if (imageEl && data.image) imageEl.src = data.image;
-                    }
-                } else {
-                    // If creating new card
-                    const booksGrid = document.querySelector('.books-grid');
-                    if (booksGrid) {
-                        const newId = 'card-' + Date.now();
-                        const newCard = document.createElement('article');
-                        newCard.className = 'book-card';
-                        newCard.setAttribute('data-id', newId);
-                        newCard.innerHTML = `
-                            <div class="card-image-container">
-                                <img src="${data.image || 'https://via.placeholder.com/300x400/95E1D3/ffffff?text=New+Book'}" alt="Book Cover" class="book-image" />
-                            </div>
-                            <div class="card-content">
-                                <div class="card-header">
-                                    <div class="author-info">
-                                        <div>
-                                            <p class="card-author">${data.author || 'Unknown'}</p>
-                                            <p class="card-rating">⭐ ${data.rating || '0'}/10</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-actions">
-                                        <button class="edit-btn" title="Edit">✏️</button>
-                                        <button class="delete-btn" title="Delete">🗑️</button>
-                                    </div>
-                                </div>
-                                <h3 class="book-title">${data.title || 'New Review'}</h3>
-                                <p class="book-review">${data.review || ''}</p>
-                            </div>
-                        `;
-                        booksGrid.insertBefore(newCard, booksGrid.firstChild);
-                    }
-                }
-                // clear result after applying
-                localStorage.removeItem('formResult');
-            } catch (err) {
-                console.error('applyFormResult error', err);
-                localStorage.removeItem('formResult');
-            }
-        })();
+        //                 if (titleEl && data.title) titleEl.textContent = data.title;
+        //                 if (authorEl && data.author) authorEl.textContent = data.author;
+        //                 if (ratingEl && data.rating) ratingEl.textContent = `⭐ ${data.rating}/10`;
+        //                 if (reviewEl && data.review) reviewEl.textContent = data.review;
+        //                 if (imageEl && data.image) imageEl.src = data.image;
+        //             }
+        //         } else {
+        //             // If creating new card
+        //             const booksGrid = document.querySelector('.books-grid');
+        //             if (booksGrid) {
+        //                 const newId = 'card-' + Date.now();
+        //                 const newCard = document.createElement('article');
+        //                 newCard.className = 'book-card';
+        //                 newCard.setAttribute('data-id', newId);
+        //                 newCard.innerHTML = `
+        //                     <div class="card-image-container">
+        //                         <img src="${data.image || 'https://via.placeholder.com/300x400/95E1D3/ffffff?text=New+Book'}" alt="Book Cover" class="book-image" />
+        //                     </div>
+        //                     <div class="card-content">
+        //                         <div class="card-header">
+        //                             <div class="author-info">
+        //                                 <div>
+        //                                     <p class="card-author">${data.author || 'Unknown'}</p>
+        //                                     <p class="card-rating">⭐ ${data.rating || '0'}/10</p>
+        //                                 </div>
+        //                             </div>
+        //                             <div class="card-actions">
+        //                                 <button class="edit-btn" title="Edit">✏️</button>
+        //                                 <button class="delete-btn" title="Delete">🗑️</button>
+        //                             </div>
+        //                         </div>
+        //                         <h3 class="book-title">${data.title || 'New Review'}</h3>
+        //                         <p class="book-review">${data.review || ''}</p>
+        //                     </div>
+        //                 `;
+        //                 booksGrid.insertBefore(newCard, booksGrid.firstChild);
+        //             }
+        //         }
+        //         // clear result after applying
+        //         localStorage.removeItem('formResult');
+        //     } catch (err) {
+        //         console.error('applyFormResult error', err);
+        //         localStorage.removeItem('formResult');
+        //     }
+        // })();
 
         // Event delegation on the books grid to handle edit and delete actions
         // const booksGrid = document.querySelector('.books-grid');
