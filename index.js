@@ -90,6 +90,23 @@ app.get("/edit/:id", async (req, res) => {
 
 });
 
+app.get("/search", async (req, res) => {
+    const input = req.query.searchInput;
+    console.log('/search received:', input);
+    try {
+        const result = await db.query(
+        "SELECT *  FROM book_review WHERE LOWER(title) LIKE CONCAT('%', LOWER($1), '%')",[input]);
+        console.log(result.rows[0])
+        
+        res.render("index.ejs",{book_review: result.rows});
+
+    } catch (err) {
+        console.error("Error in Fetching Data:", err.message)
+        res.redirect("/");
+    }
+    
+});
+
 
 app.post("/submit", async (req, res) => {
     const title = req.body.title;
